@@ -7,9 +7,9 @@ require '../vendor/autoload.php';
 
 class Email
 {
-    private $email_origem = "naoresponda@samsites.com.br";//"atendimento@asfito.com.br";
-    private $senha = "#Sa747400";//'Fisio050620';
-    private $host = 'smtp.hostinger.com';
+    private $email_origem = "";
+    private $senha = "";
+    private $host = "";
     
     public function Variaveis($mail)
     {
@@ -31,7 +31,7 @@ class Email
             $emailClass->Variaveis($mail);
             
             // Remetente e destinatário
-            $mail->setFrom($emailClass->email_origem, 'ASFITO-ELEIÇÃO');
+            $mail->setFrom($emailClass->email_origem, 'ASSOCIAÇÃO-ELEIÇÃO');
             $mail->addAddress($email);
 
             // Conteúdo do e-mail
@@ -54,12 +54,12 @@ class Email
             $emailClass->Variaveis($mail);
             
             // Remetente e destinatário
-            $mail->setFrom($emailClass->email_origem, 'ASFITO-ELEIÇÃO');
+            $mail->setFrom($emailClass->email_origem, 'ASSOCIAÇÃO-ELEIÇÃO');
             $mail->addAddress($email);
 
             // Conteúdo do e-mail
             $mail->isHTML(true);
-            $mail->Subject = 'Comprovante de Votação - ASFITO [ELEIÇÕES 2024]';
+            $mail->Subject = 'Comprovante de Votação - ASSOCIAÇÃO [ELEIÇÕES 2024]';
             $mail->Body    = "Olá " . $nome . ", você registrou o seguinte voto: <strong>" . $voto_registrado . "</strong>.<br>O código autorização do registro desse voto foi o " . $codigo_verificacao . " enviado no seu e-mail.<br>O voto foi registrado em " . $data_hora . ".<br>O IP de acesso foi ".$ip.".";
             $mail->CharSet = 'UTF-8';
             $mail->send();
