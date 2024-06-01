@@ -1,0 +1,392 @@
+<!--<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Votação Online</title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    Adicionando o CSS do Bootstrap
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <script src="js/jquery.js"></script>
+
+    <style>
+      .carousel-control-prev-icon,
+      .carousel-control-next-icon {
+        background-color: #007bff; /* Cor azul padrão do Bootstrap */
+        background-size: 100%, 100%;
+        border-radius: 50%;
+      }
+      .carousel-control-prev-icon:hover,
+      .carousel-control-next-icon:hover {
+        background-color: #0056b3; /* Cor azul mais escura para hover */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="text-center mb-4">
+        <img
+          src="logo.png"
+          alt="Logo"
+          class="img-fluid"
+          style="max-height: 100px"
+        />
+      </div>
+
+      <h1 class="mt-5 mb-4 text-center">ASFITO - ELEIÇÕES 2024</h1>
+      <h6 class="mt-5 mb-4 text-center">
+        <a
+          href="https://docs.google.com/forms/d/e/1FAIpQLScPfSrLc-kw5-3b2IBLZ-8Y7fFcqWsZbjMO_5c6B4kE91jk3Q/viewform"
+          >Atualizar Cadastro</a
+        >
+      </h6>
+      <div class="row justify-content-center">
+        <div id="alerta" role="alert"></div>
+        <div id="spinner" class="d-flex justify-content-center"></div>
+
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-body">
+              <form id="autenticacaoForm">
+                <div class="col"><h2>1ª ETAPA</h2></div>
+                <div class="col">
+                  <i
+                    id="checkcpf"
+                    class="bi bi-check"
+                    style="display: none; font-size: 32px; color: green"
+                  ></i>
+                </div>
+                <div class="mb-3">
+                  <label id="lcpf" for="cpf" class="form-label">CPF</label>
+
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="cpf"
+                    placeholder="Digite seu CPF (somente números)"
+                    min="0"
+                    step="1"
+                    required
+                  />
+                </div>
+                <button
+                  id="btnAutentica"
+                  type="submit"
+                  class="btn btn-outline-info"
+                >
+                  Solicitar Código
+                  <span id="spinnerAutentica" aria-hidden="true"></span>
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-body">
+              <form id="verificacaoForm" style="display: none">
+                <div class="col"><h2>2ª ETAPA</h2></div>
+                <div class="col">
+                  <i
+                    id="checkcodigo"
+                    class="bi bi-check"
+                    style="display: none; font-size: 32px; color: green"
+                  ></i>
+                </div>
+                <div class="mb-3">
+                  <label id="lcodigo" for="codigo" class="form-label"
+                    >Verificar Código</label
+                  >
+
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="codigo"
+                    placeholder="Digite o código para votação"
+                    required
+                  />
+                </div>
+                <button
+                  id="btnVerifica"
+                  type="submit"
+                  class="btn btn-outline-info"
+                >
+                  Verificar Código
+                  <span id="spinnerVerifica" aria-hidden="true"></span>
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-body">
+              <form id="votacaoForm" style="display: none">
+                <div class="col"><h2>3ª ETAPA</h2></div>
+                <div class="col">
+                  <i
+                    id="checkvoto"
+                    class="bi bi-check"
+                    style="display: none; font-size: 32px; color: green"
+                  ></i>
+                </div>
+                <div id="candidatoRadiobuttons">
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      name="candidato"
+                      id="chapa1"
+                      value="Chapa 1"
+                    />
+                  </div>
+                  <div class="accordion" id="accordionPanelsStayOpenExample">
+                    <div class="accordion-item">
+                      <h2 class="accordion-header">
+                        <button
+                          class="accordion-button"
+                          type="button"
+                          data-bs-toggle="collapse"
+                          data-bs-target="#panelsStayOpen-collapseOne"
+                          aria-expanded="true"
+                          aria-controls="panelsStayOpen-collapseOne"
+                        >
+                          CHAPA 1
+                        </button>
+                      </h2>
+                      <div
+                        id="panelsStayOpen-collapseOne"
+                        class="accordion-collapse collapse show"
+                      >
+                        <div class="accordion-body">
+                          <strong>DIRETORIA EXECUTIVA</strong>
+                          <ul>
+                            <li>Presidente: Carolina Nunes Cavalcante Matos</li>
+                            <li>
+                              Vice-Presidente: Sandro Bernardino Ribeiro de
+                              Abreu Adrian
+                            </li>
+                            <li>
+                              Diretor Jurídico e Financeiro: Raphael Cota Couto
+                            </li>
+                            <li>
+                              Diretor Administrativo: Camylle Maia Costa Faria
+                            </li>
+                            <li>
+                              Diretor Secretário-Geral: Hozana Lemos Ribeiro
+                              Costa
+                            </li>
+                            <li>
+                              Diretor de Comunicação Social: Kamila Caixeta e
+                              Ferreira Renovato
+                            </li>
+                            <li>
+                              Diretor de Eventos: Ronysmario Alves de Souza
+                            </li>
+                            <li>
+                              Diretor de Projetos: Camila Teixeira de Oliveira
+                              Penna Chaves
+                            </li>
+                            <li>
+                              Diretor de Apoio Científico: Cirlei Bezerra da
+                              Silva
+                            </li>
+                            <li>
+                              Diretor de Inovação: Mário José de Araujo Neto
+                            </li>
+                            <li>
+                              Diretor Regional de Araguaína: Natália Pacheco
+                              Lanzoni Yamashita
+                            </li>
+                            <li>
+                              Diretor Regional de Arraias: Igor Ramiro Araújo
+                              Camelo
+                            </li>
+                            <li>
+                              Diretor Regional de Gurupi: Florence Germaine
+                              Tible Laisncek
+                            </li>
+                            <li>
+                              Diretor Regional de Guaraí: Glaucielho Cardoso
+                              D’avila
+                            </li>
+                          </ul>
+                          <strong>CONSELHO FISCAL</strong>
+                          <ul>
+                            <li>
+                              Conselheiro Fiscal: Waldir Cleiton Gomes da Silva
+                            </li>
+                            <li>
+                              Conselheiro Fiscal: Enilda Aparecida Lacerda
+                            </li>
+                            <li>Conselheiro Fiscal: Rafaela Rosa Ferreira</li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      name="candidato"
+                      id="nulo"
+                      value="Nulo"
+                    />
+                  </div>
+                  <div
+                    class="accordion"
+                    id="accordionPanelsStayOpenExampleTwoTwo"
+                  >
+                    <div class="accordion-item">
+                      <h2 class="accordion-header">
+                        <button
+                          class="accordion-button"
+                          type="button"
+                          data-bs-toggle="collapse"
+                          data-bs-target="#panelsStayOpen-collapseTwo"
+                          aria-expanded="true"
+                          aria-controls="panelsStayOpen-collapseTwo"
+                        >
+                          NULO
+                        </button>
+                      </h2>
+                      <div
+                        id="panelsStayOpen-collapseTwo"
+                        class="accordion-collapse collapse show"
+                      >
+                        <div class="accordion-body"></div>
+                      </div>
+                    </div>
+                  </div>
+                 Adicione mais radiobuttons conforme necessário
+                </div>
+
+                <div class="mb-3">
+                  <label for="voto" class="form-label">Seu voto:</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="voto"
+                    placeholder="Registre seu voto"
+                    required
+                    disabled
+                  />
+                </div>
+                <button type="submit" class="btn btn-outline-info">
+                  Registrar Voto
+                  <span id="spinnerVoto" aria-hidden="true"></span>
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+   Adicionando o JavaScript do Bootstrap
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/script.js"></script>
+    <script>
+      $(document).ready(function () {
+        /*$.getJSON("https://ipinfo.io?token=00f09f8fea0002", function(response) {
+                window.ipAddress = response.ip;
+                console.log("IP Address set in window.ipAddress:", window.ipAddress);
+            }, "jsonp");*/
+
+        fetch("https://api.ipify.org?format=json")
+          .then((response) => response.json())
+          .then((data) => {
+            window.ipAddress = data.ip;
+            console.log("Endereço IP:", window.ipAddress); // Apenas para verificar no console
+          })
+          .catch((error) => {
+            console.error("Erro ao obter o endereço IP:", error);
+          });
+      });
+      document.querySelectorAll('input[name="candidato"]').forEach((radio) => {
+        radio.addEventListener("change", function () {
+          const candidatoSelecionado = document.querySelector(
+            'input[name="candidato"]:checked'
+          ).value;
+          console.log("Candidato selecionado:", candidatoSelecionado);
+          document.getElementById("voto").value = candidatoSelecionado;
+          // Aqui você pode adicionar qualquer lógica necessária para lidar com a seleção do candidato
+        });
+      });
+    </script>
+  </body>
+</html>
+-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Votação Online</title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <!-- Adicionando o CSS do Bootstrap -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <script src="js/jquery.js"></script>
+    <!-- Adicionando o JavaScript do Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/script.js"></script>
+    <style>
+      .carousel-control-prev-icon,
+      .carousel-control-next-icon {
+        background-color: #007bff; /* Cor azul padrão do Bootstrap */
+        background-size: 100%, 100%;
+        border-radius: 50%;
+      }
+      .carousel-control-prev-icon:hover,
+      .carousel-control-next-icon:hover {
+        background-color: #0056b3; /* Cor azul mais escura para hover */
+      }
+    </style>
+  </head>
+  <body onload="Votos();">
+    <div class="container">
+      <div class="text-center mb-4">
+        <img
+          src="logo.png"
+          alt="Logo"
+          class="img-fluid"
+          style="max-height: 100px"
+        />
+      </div>
+
+      <h1 class="mt-5 mb-4 text-center">ASFITO - ELEIÇÕES 2024</h1>
+            <h2 class="mt-5 mb-4 text-center">VOTAÇÃO ENCERRADA ÀS 13:00H DO DIA 31/05/2024</h2>
+      <h2 class="mt-5 mb-4 text-center" id="votos_computados"></h2>
+      <h2 class="mt-5 mb-4 text-center" id="chapa1"></h2>
+      <h2 class="mt-5 mb-4 text-center" id="nulo"></h2>
+      
+    </div>
+
+
+  </body>
+</html>
